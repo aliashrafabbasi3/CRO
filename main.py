@@ -19,6 +19,15 @@ load_dotenv()
 # Initialize FastAPI app
 app = FastAPI()
 
+# Configure CORS to allow frontend to make requests
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:3000"],  # React app URL
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 # Set up logging
 logging.basicConfig(level=logging.DEBUG)
 
