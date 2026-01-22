@@ -11,6 +11,8 @@ const FileUpload = () => {
 
   const onFileChange = (e) => {
     setFile(e.target.files[0]);
+    setError(null);
+    setResult(null);
   };
 
   const onUpload = async () => {
@@ -21,6 +23,7 @@ const FileUpload = () => {
 
     setLoading(true);
     setError(null);
+    setResult(null);
 
     const formData = new FormData();
     formData.append("file", file);
@@ -44,22 +47,56 @@ const FileUpload = () => {
 
   return (
     <div className="App">
-      <div className="App-header">
-        <h1>Upload a Document to Extract Information</h1>
-        <input type="file" onChange={onFileChange} />
-        <button onClick={onUpload} disabled={loading}>
-          {loading ? "Uploading..." : "Upload File"}
-        </button>
-      </div>
+      <div className="upload-container">
+        <div className="App-header">
+          <h1>✨ Document Data Extractor</h1>
+        </div>
 
-      {error && <p className="error">{error}</p>}
+        <div className="file-input-wrapper">
+          <input type="file" onChange={onFileChange} accept="image/*,.pdf" />
+        </div>
+
+        <button onClick={onUpload} disabled={loading}>
+          {loading ? (
+            <>
+              Processing
+              <span className="loading-spinner"></span>
+            </>
+          ) : (
+            "🚀 Extract Information"
+          )}
+        </button>
+
+        {error && <div className="error">❌ {error}</div>}
+      </div>
 
       {result && (
         <div className="result">
-          <h2>Extracted Information:</h2>
-          <p><strong>Name:</strong> {result.name}</p>
-          <p><strong>Phone Number:</strong> {result.phone_number}</p>
-          <p><strong>Email:</strong> {result.email}</p>
+          <h2>📋 Extracted Information</h2>
+          <div className="result-item">
+            <strong>🏢 Facility Name:</strong>
+            <span> {result.fields?.facility_name || 'Not found'}</span>
+          </div>
+          <div className="result-item">
+            <strong>👤 Person Name:</strong>
+            <span> {result.fields?.person_name || 'Not found'}</span>
+          </div>
+          <div className="result-item">
+            <strong>💼 Role:</strong>
+            <span> {result.fields?.person_role || 'Not found'}</span>
+          </div>
+          <div className="result-item">
+            <strong>📧 Email:</strong>
+            <span> {result.fields?.email || 'Not found'}</span>
+          </div>
+          <div className="result-item">
+            <strong>📱 Phone:</strong>
+            <span> {result.fields?.phone || 'Not found'}</span>
+          </div>
+          <div className="result-item">
+            <strong>📍 Address:</strong>
+            <span> {result.fields?.address || 'Not found'}</span>
+          </div>
         </div>
       )}
     </div>
