@@ -2,6 +2,7 @@ import boto3
 import os
 from fastapi import FastAPI, File, UploadFile
 from fastapi.responses import JSONResponse
+from fastapi.middleware.cors import CORSMiddleware
 from dotenv import load_dotenv
 import logging
 import aiofiles
@@ -26,7 +27,8 @@ textract = boto3.client(
     'textract',
     region_name=os.getenv("AWS_REGION"),
     aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY")
+    aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
+    endpoint_url="https://textract.us-east-1.amazonaws.com"
 )
 
 # Initialize OpenAI
